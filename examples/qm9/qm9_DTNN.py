@@ -35,8 +35,9 @@ model = dc.models.DTNNModel(
     use_queue=False,
     mode="regression")
 
-all_vars = tf.trainable_variables()
-print(sum([v.eval().shape for v in all_vars])
+with model._get_tf("Graph").as_default():
+    all_vars = tf.trainable_variables()
+print(sum([model._run_graph(v).size for v in all_vars])
 
 # Fit trained model
 model.fit(train_dataset, nb_epoch=20)
